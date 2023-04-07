@@ -9,31 +9,6 @@ class Noveld {
         this.#parseSection(src)
     }
     */
-}
-class Lexer {
-    lex(src) {
-        const textBlockRanges = []
-        this.#lines = src.trim().split(/\r?\n/)
-        const indexes = _indexes.filter(i=>((0===i && this.#lines[i] && !this.#lines[i+1]) || [this.#lines[i-1], this.#lines[i+1]].every(line=>!line)))
-        let [start, end] = [-1, -1]
-        const chars = this.#lines.map(line=>line.length)
-        for (let i=0; i<this.#lines.length; i++) {
-            if (start < i && this.#lines[i]) { start = i; end = i; }
-            if (start < i && this.#lines[i])
-        }
-
-        const textBlockRanges = []
-        let [start, end] = [-1, -1]
-        for (let i=bodyRange.start; i<=bodyRange.end; i++) {
-            if (start < 0 && this.#lines[i]) { start = i; end = i; }
-            if (0 <= start) {
-                if (this.#lines[i].trim()) { end++; }
-                else { textBlockRanges.push(start, end) }
-            }
-        }
-        return textBlockRanges 
-
-    }
     #parseSection(src) {
         this.#sections = []
         //this.#lines = src.split(/\r?\n/).map(line=>line.trim()) // markdownを含めるならダメ
