@@ -80,7 +80,13 @@ class Noveld {
     #parseRuby() {}
     #parseTematicBreak() {}
 
-    
+    // ○this[メソッド名](引数)
+    // ✕ this[#メソッド名](引数)
+    // https://stackoverflow.com/questions/61197325/js-dynamically-access-private-fields-properties-members
+    /*
+    for (let key of ['Section', 'Paragraph', 'Em', 'Ruby', 'TematicBreak']) {
+        if (this[`_is${key}](start, end)) { this[`_parse${key}`].parse() }
+    */
 
     #isTextBlock() { return ([this.#lines[i-1], this.#lines[i+1]].every(line=>0===line.trim().length)) }
     #appendContents(section, contents) { for (let c of contents) { section.append(c) } }
