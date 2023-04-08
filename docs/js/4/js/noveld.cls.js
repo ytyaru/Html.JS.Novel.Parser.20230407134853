@@ -2,7 +2,7 @@ class Noveld {
     #options = {em:true, ruby:true, breaks:true, thematicBreak:{border:true, text:'◇◆◇◆'}, section:true}
     setOptions(options) { this.#options = {...this.#options, ...options} }
     parse(src) {
-        return new Lexer().lex(src)
+        return new Lexer().lex(new RubyParser().parse(src))
     }
     toHtml(dom) { const s = new XMLSerializer(); return s.serializeToString(dom); }
     toDom(html) { const p = new DOMParser(); return p.parseFromString(html); }
@@ -35,23 +35,26 @@ class Lexer {
 //        const indexes = _indexes.filter(i=>((0===i && this.#lines[i] && !this.#lines[i+1]) || [this.#lines[i-1], this.#lines[i+1]].every(line=>!line)))
         let [start, end] = [0, 0]
         for (var i=0; i<this.#lines.length; i++) {
-//            console.log(i, this.#lines[i])
+            /*
+            start = i
+            end = (this.#hasText(i)) ? this.#getTextBlockRangeEnd(start) : this.#getBreakBlockRangeEnd(start)
+            if (this.#hasText(i)) {  this.#textBlockRanges.push({start:start, end:end}) }
+            else { if (0 < end-start) { this.#textBlockRanges.push({start:start, end:end, parse:Parser.break}) } }
+            */
             if (this.#hasText(i)) {
                 start = i
                 end = this.#getTextBlockRangeEnd(start)
                 this.#textBlockRanges.push({start:start, end:end})
                 i = end
-//                if (!this.#isLastLine(i) && !this.#hasText(i+1) {
-//                    this.#textBlockRanges.push({start:start, end:i})
-//                }
             } else {
                 start = i
                 end = this.#getBreakBlockRangeEnd(start)
                 console.log('break', start, end)
                 if (0 < end-start) { this.#textBlockRanges.push({start:start, end:end, parse:Parser.break}) }
-                //if (0 < end-start) { this.#textBlockRanges.push({start:start, end:end, type:'break'}) }
                 i = end
             }
+            /*
+            */
         }
         console.debug(this.#textBlockRanges)
     }
@@ -72,6 +75,27 @@ class Lexer {
 }
 class Parser {
     static break(lines) { return '<br>'.repeat(lines.length-1) }
+    static thematicBreak(lines) { return `<div class="${clss.join(' ')}"><p>${this._options.thematicBreak.text}</p></div>` }
+    static html(lines) { return lines.join('\n') }
+}
+class BlockParser {
+    parse(lines) {
+        
+    }
+}
+class InlineParser {
+    parse() {
+
+    }
+}
+class RubyParser {
+    #SHORT = /([一-龠々仝〆〇ヶ]{1,50})《([^｜《》\n\r]{1,20})》/g
+    #LONG = /｜([^｜《》\n\r]{1,50})《([^｜《》\n\r]{1,20})》/g
+    #ESCAPE = /｜《/g
+    parse(src) { return this.#escape([this.#LONG, this.#SHORT].reduce((src, reg)=>
+            src.replace(reg, (match, rb, rt)=>{ return this.#toHtml(rb, rt) }), src)) }
+    #escape(src) { return src.replace(this.#ESCAPE, (match)=>'《') }
+    #toHtml(rb, rt) { return `<ruby>${rb}<rp>（</rp><rt>${rt}</rt><rp>）</rp></ruby>` }
 }
 /*
 class Noveld {
