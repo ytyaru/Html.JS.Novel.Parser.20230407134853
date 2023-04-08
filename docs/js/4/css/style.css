@@ -6,7 +6,9 @@
 }
 */
 body {
-    --line-of-chars:40;
+    --line-of-chars: 40;
+    --color: black;
+    --background: white;
     font-size: calc(100vw / (var(--line-of-chars)));
     line-height: 1.5em;
     letter-spacing: 0.05em;
@@ -18,20 +20,20 @@ img.icon {
 em {
     font-style: normal; /* 非イタリック化 */
     text-emphasis-style: filled dot; 
-    text-emphasis-color: inherit;
-    -webkit-text-emphasis: filled dot inherit;
+    text-emphasis-color: var(--color);
+    -webkit-text-emphasis: filled dot var(--color);
 }
-em.dot { text-emphasis-style: dot; -webkit-text-emphasis: filled dot inherit; }
-em.circle { text-emphasis-style: circle; -webkit-text-emphasis: filled circle inherit; }
-em.double-circle { text-emphasis-style: double-circle; -webkit-text-emphasis: filled double-circle inherit; }
-em.triangle { text-emphasis-style: triangle; -webkit-text-emphasis: filled triangle inherit; }
-em.sesame { text-emphasis-style: sesame; -webkit-text-emphasis: filled sesame inherit; }
+em.dot { text-emphasis-style: dot; -webkit-text-emphasis: filled dot var(--color); }
+em.circle { text-emphasis-style: circle; -webkit-text-emphasis: filled circle var(--color); }
+em.double-circle { text-emphasis-style: double-circle; -webkit-text-emphasis: filled double-circle var(--color); }
+em.triangle { text-emphasis-style: triangle; -webkit-text-emphasis: filled triangle var(--color); }
+em.sesame { text-emphasis-style: sesame; -webkit-text-emphasis: filled sesame var(--color); }
 em.char { text-emphasis-style: '🌙'; -webkit-text-emphasis-style:  '🌙'; }
-em.open-dot { text-emphasis-style: open dot; -webkit-text-emphasis: open dot inherit; }
-em.open-circle { text-emphasis-style: open circle; -webkit-text-emphasis: open circle inherit; }
-em.open-double-circle { text-emphasis-style: open double-circle; -webkit-text-emphasis: open double-circle inherit; }
-em.open-triangle { text-emphasis-style: open triangle; -webkit-text-emphasis: open triangle inherit; }
-em.open-sesame { text-emphasis-style: open sesame; -webkit-text-emphasis: open sesame inherit; }
+em.open-dot { text-emphasis-style: open dot; -webkit-text-emphasis: open dot var(--color); }
+em.open-circle { text-emphasis-style: open circle; -webkit-text-emphasis: open circle var(--color); }
+em.open-double-circle { text-emphasis-style: open double-circle; -webkit-text-emphasis: open double-circle var(--color); }
+em.open-triangle { text-emphasis-style: open triangle; -webkit-text-emphasis: open triangle var(--color); }
+em.open-sesame { text-emphasis-style: open sesame; -webkit-text-emphasis: open sesame var(--color); }
 
 .scene-change { margin: 1em 0em; }
 .scene-change-border { display:flex; align-items:center; }
