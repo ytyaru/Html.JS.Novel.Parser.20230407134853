@@ -48,6 +48,33 @@ window.addEventListener('DOMContentLoaded', async(event) => {
         PREVIEW.innerHTML = html
     })
     MARKDOWN.dispatchEvent(new Event('input'))
+
+    function setOptions(e) {
+        const options = {}
+        options[e.target.id] = ('checkbox'===e.target.type) ? e.target.checked : e.target.value
+        noveld.setOptions(options)
+        console.log(noveld.options)
+        MARKDOWN.dispatchEvent(new Event('input'))
+    }
+    function initOptions() {
+        const options = {}
+        for (let id of ['ruby', 'break', 'thematicBreak', 'thematicBreakBorder', 'thematicBreakText']) {
+            const el = document.getElementById(id)
+            options[id] = ('checkbox'===el.type) ? el.checked : el.value
+        }
+        noveld.setOptions(options)
+        console.log(noveld.options)
+        MARKDOWN.dispatchEvent(new Event('input'))
+    }
+    document.getElementById('ruby').addEventListener('change', async(event) => { setOptions(event) } )
+    document.getElementById('break').addEventListener('change', async(event) => { setOptions(event) } )
+    document.getElementById('thematicBreak').addEventListener('change', async(event) => { setOptions(event) } )
+    document.getElementById('thematicBreakBorder').addEventListener('change', async(event) => { setOptions(event) } )
+    document.getElementById('thematicBreakText').addEventListener('input', async(event) => { setOptions(event) } )
+    document.getElementById('init').addEventListener('click', async(event) => { document.getElementById('form').reset(); initOptions(); } )
+//    document.getElementById('form').addEventListener('reset', async(event) => { initOptions() } )
+//    document.querySelectorAll('').addEventListener('change', async(event) => {})
+    
 });
 window.addEventListener('beforeunload', (event) => {
     console.log('beforeunload!!');

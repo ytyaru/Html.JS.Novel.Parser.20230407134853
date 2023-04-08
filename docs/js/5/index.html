@@ -17,15 +17,28 @@
 <script src="js/main.js"></script>
 </head>
 <body>
+<h1>Markdown→HTML</h1>
 <div style="height:95vh;">
-    <details><summary>使い方</summary><div id="how-to-use"></div></details>
+    <div style="display:flex;">
+        <details><summary>使い方</summary><div id="how-to-use"></div></details>
+        <details><summary>引数</summary>
+            <form id="form">
+            <label><input type="checkbox" id="ruby" name="ruby" checked>Ruby</label>
+            <label><input type="checkbox" id="break" name="break" checked>Break</label>
+            <label><input type="checkbox" id="thematicBreak" name="thematicBreak" checked>ThematicBreak</label>
+            <label><input type="checkbox" id="thematicBreakBorder" name="thematicBreakBorder" checked>ThematicBreakBorder</label>
+            <label><input type="text" id="thematicBreakText" name="thematicBreakText" value="◇◆◇◆"></label>
+            <button type="reset" id="init">初期化</button>
+            </form>
+        </details>
+    </div>
     <!--<div style="display:flex; height:80vh; width:80vw;">-->
     <div style="display:grid; grid-template-columns: repeat(3, 1fr);">
         <textarea id="markdown"></textarea>
-        <textarea id="html" disabled></textarea>
         <div id="preview"></div>
+        <textarea id="html" disabled></textarea>
     </div>
-    <footer style="margin-top:1em;">
+    <footer style="margin-top:1em; text-align:center;">
         <span>© 2023 ytyaru</span>
         <a title="CC-BY-SA" \
            href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja"
