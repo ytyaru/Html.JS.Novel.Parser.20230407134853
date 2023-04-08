@@ -1,7 +1,7 @@
 (function () { // window.noveld
     class Noveld {
         #s; #p; #l; #r;
-        #defaultOptions = {ruby:true, break:true, thematicBreak:{border:true, text:'◇◆◇◆'}}
+        #defaultOptions = {ruby:true, break:true, thematicBreak:true, thematicBreakBorder:true, thematicBreakText:'◇◆◇◆'}
         constructor() { this.resetOptions(); this.#l = new Lexer(); this.#r = new RubyParser(); }
         resetOptions() { this.options = this.getDefaultOptions() }
         getDefaultOptions() { return [this.#defaultOptions].map((element)=>{ return {...element} })[0] }
@@ -61,7 +61,7 @@
     }
     class Parser {
         static break(lines) { return '<br>'.repeat(lines.length-1) + '\n' }
-        static thematicBreak(lines) { return `<div class="scene-change${(window.noveld.options.thematicBreak.border) ? ' scene-change-border' : ''}"><p>${window.noveld.options.thematicBreak.text}</p></div>\n` }
+        static thematicBreak(lines) { return `<div class="scene-change${(window.noveld.options.thematicBreakBorder) ? ' scene-change-border' : ''}"><p>${window.noveld.options.thematicBreakText}</p></div>\n` }
         static html(lines) { return lines.join('\n') + '\n' }
         static newline(lines) { return lines.slice(1).join('\n') }
     }

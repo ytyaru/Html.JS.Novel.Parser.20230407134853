@@ -10,11 +10,6 @@ class NoveldTest {
         noveld.setOptions({break:false}); console.assert(false===noveld.options.break);
         noveld.setOptions({thematicBreak:false})
         console.assert(false===noveld.options.thematicBreak);
-        /*
-        noveld.setOptions({thematicBreak:{border:false,text:'＊'}})
-        console.assert(false===noveld.options.thematicBreak.border);
-        console.assert('＊'===noveld.options.thematicBreak.text);
-        */
         // parse
         let src = "山《やま》\n\n\n｜ABC《えーびーしー》\n\n---\n\nおわり。"
         console.log(src.split(/\n/))
@@ -25,7 +20,17 @@ class NoveldTest {
         this.#testOptions(noveld.options)
         console.log(noveld.parse(src))
         console.assert(noveld.parse(src)==`<ruby>山<rp>（</rp><rt>やま</rt><rp>）</rp></ruby>\n\n<br>\n\n<ruby>ABC<rp>（</rp><rt>えーびーしー</rt><rp>）</rp></ruby>\n\n<div class="scene-change scene-change-border"><p>◇◆◇◆</p></div>\n\nおわり。`);
-
+        // options.thematicBreakBorder:falseのCSS値
+        noveld.setOptions({thematicBreakBorder:false})
+        console.log(noveld.options)
+        console.log(noveld.parse(src))
+        console.assert(noveld.parse(src)==`<ruby>山<rp>（</rp><rt>やま</rt><rp>）</rp></ruby>\n\n<br>\n\n<ruby>ABC<rp>（</rp><rt>えーびーしー</rt><rp>）</rp></ruby>\n\n<div class="scene-change"><p>◇◆◇◆</p></div>\n\nおわり。`);
+        // options.thematicBreakText:＊のpテキストノード値
+        noveld.setOptions({thematicBreakText:'＊'})
+        console.log(noveld.options)
+        console.log(noveld.parse(src))
+        console.assert(noveld.parse(src)==`<ruby>山<rp>（</rp><rt>やま</rt><rp>）</rp></ruby>\n\n<br>\n\n<ruby>ABC<rp>（</rp><rt>えーびーしー</rt><rp>）</rp></ruby>\n\n<div class="scene-change"><p>＊</p></div>\n\nおわり。`);
+        
         console.log('%cOK! NoveldTest', `color:green; background:white;`)
     }
     static #testOptions(options) {
@@ -33,7 +38,7 @@ class NoveldTest {
         console.assert(options.ruby)
         console.assert(options.break)
         console.assert(options.thematicBreak)
-        console.assert(options.thematicBreak.border)
-        console.assert('◇◆◇◆'===options.thematicBreak.text)
+        console.assert(options.thematicBreakBorder)
+        console.assert('◇◆◇◆'===options.thematicBreakText)
     }
 }
