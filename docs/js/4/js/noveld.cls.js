@@ -24,8 +24,8 @@
                 this.#html.push(block.parse(lines))
             }
             console.debug(this.#html)
-            console.debug(this.#html.join('\n\n'))
-            return this.#html.join('\n\n')
+            console.debug(this.#html.join('\n'))
+            return this.#html.join('\n').trimEnd('\n')
         }
         #clearHtml() { this.#html.splice(0) }
         #clearTextBlockRanges() { this.#textBlocks.splice(0) }
@@ -54,15 +54,16 @@
         constructor(start, end) { this.start = start; this.end = end; }
         parse(lines) { return this.#getParser(lines)(lines) }
         #getParser(lines) {
-            if (!lines[0]) { return (window.noveld.options.break) ? Parser.break : Parser.html }
+            if (!lines[0]) { return (window.noveld.options.break) ? Parser.break : Parser.newline }
             else if ('---'===lines[0] && this.start===this.end) { return (window.noveld.options.thematicBreak) ? Parser.thematicBreak : Parser.html}
             else { return Parser.html }
         }
     }
     class Parser {
-        static break(lines) { return '<br>'.repeat(lines.length-1) }
-        static thematicBreak(lines) { return `<div class="scene-change${(window.noveld.options.thematicBreak.border) ? ' scene-change-border' : ''}"><p>${window.noveld.options.thematicBreak.text}</p></div>` }
-        static html(lines) { return lines.join('\n') }
+        static break(lines) { return '<br>'.repeat(lines.length-1) + '\n' }
+        static thematicBreak(lines) { return `<div class="scene-change${(window.noveld.options.thematicBreak.border) ? ' scene-change-border' : ''}"><p>${window.noveld.options.thematicBreak.text}</p></div>\n` }
+        static html(lines) { return lines.join('\n') + '\n' }
+        static newline(lines) { return lines.slice(1).join('\n') }
     }
     class RubyParser {
         #SHORT = /([一-龠々仝〆〇ヶ]{1,50})《([^｜《》\n\r]{1,20})》/g

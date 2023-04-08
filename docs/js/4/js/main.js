@@ -11,6 +11,7 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     document.getElementById('content').innerHTML = html
     console.log(noveld.toDom(html))
     console.log(noveld.toHtml(noveld.toDom(html)))
+    NoveldTest.test()
     /*
     const hooks = { preprocess(md) { return new Noveld().parse(md) } };
     marked.use({ hooks });
