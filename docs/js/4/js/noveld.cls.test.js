@@ -20,6 +20,11 @@ class NoveldTest {
         console.log(src.split(/\n/))
         console.log(noveld.parse(src).split(/\n/))
         console.assert(src==noveld.parse(src));
+        // resetOptions
+        noveld.resetOptions()
+        this.#testOptions(noveld.options)
+        console.log(noveld.parse(src))
+        console.assert(noveld.parse(src)==`<ruby>山<rp>（</rp><rt>やま</rt><rp>）</rp></ruby>\n\n<br>\n\n<ruby>ABC<rp>（</rp><rt>えーびーしー</rt><rp>）</rp></ruby>\n\n<div class="scene-change scene-change-border"><p>◇◆◇◆</p></div>\n\nおわり。`);
 
         console.log('%cOK! NoveldTest', `color:green; background:white;`)
     }
