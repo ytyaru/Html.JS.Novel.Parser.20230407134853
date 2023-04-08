@@ -1,12 +1,12 @@
 (function () { // window.noveld
     class Noveld {
         #s; #p; #l; #r;
-        #defaultOptions = {em:true, ruby:true, breaks:true, thematicBreak:{border:true, text:'◇◆◇◆'}, section:true}
+        #defaultOptions = {ruby:true, break:true, thematicBreak:{border:true, text:'◇◆◇◆'}}
         constructor() { this.resetOptions(); this.#l = new Lexer(); this.#r = new RubyParser(); }
         resetOptions() { this.options = this.getDefaultOptions() }
         getDefaultOptions() { return [this.#defaultOptions].map((element)=>{ return {...element} })[0] }
         setOptions(options) { this.options = {...this.options, ...options} }
-        parse(src) { return this.#l.lex(this.#r.parse(src)) }
+        parse(src) { return this.#l.lex((this.options.ruby) ? this.#r.parse(src) : src) }
         toHtml(dom) { this.#s = this.#s || new XMLSerializer(); return this.#s.serializeToString(dom); }
         toDom(html) { this.#p = this.#p || new DOMParser(); return this.#p.parseFromString(html, 'text/html'); }
     }
@@ -54,8 +54,8 @@
         constructor(start, end) { this.start = start; this.end = end; }
         parse(lines) { return this.#getParser(lines)(lines) }
         #getParser(lines) {
-            if (!lines[0]) { return Parser.break }
-            else if ('---'===lines[0] && this.start===this.end) { return Parser.thematicBreak }
+            if (!lines[0]) { return (window.noveld.options.break) ? Parser.break : Parser.html }
+            else if ('---'===lines[0] && this.start===this.end) { return (window.noveld.options.thematicBreak) ? Parser.thematicBreak : Parser.html}
             else { return Parser.html }
         }
     }
