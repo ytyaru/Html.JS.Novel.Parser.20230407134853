@@ -1,109 +1,15 @@
 class Noveld {
     #options = {em:true, ruby:true, breaks:true, thematicBreak:{border:true, text:'◇◆◇◆'}, section:true}
     setOptions(options) { this.#options = {...this.#options, ...options} }
-    parse(src) {
-        new Lexer().lex(src)
-    }
-    toHtml(dom) { const s = new XMLSerializer(); return s.serializeToString(dom); }
-    toDom(html) { const p = new DOMParser(); return p.parseFromString(html); }
-    /*
     inject(src, targetDom) {
         for (let section of this.#parseSection(src)) { targetDom.append(section) }
     }
-    */
-}
-class Lexer {
-    #lines = null
-    #textBlockRanges = []
-    #html = []
-    constructor() {
-        this.parser = new Parser()
-    }
-    lex(src) {
-        this.#lines = src.trim().split(/\r?\n/)
-        console.debug(this.#lines)
-        this.#getTextBlockRanges()
-        this.#clearHtml()
-        for (let range of this.#textBlockRanges) {
-            this.#html.push(range.parser(this.#lines.slice(range.start, range.end+1)))
-        }
-        console.debug(this.#html)
-    }
-    #clearHtml() { this.#html.splice(0) }
-    #clearTextBlockRanges() { this.#textBlockRanges.splice(0) }
-    #getTextBlockRanges() {
-        this.#clearTextBlockRanges() 
-//        const chars = this.#lines.map(line=>line.length).filter((len,i)=>0===len && )
-//        const indexes = _indexes.filter(i=>((0===i && this.#lines[i] && !this.#lines[i+1]) || [this.#lines[i-1], this.#lines[i+1]].every(line=>!line)))
-        let [start, end] = [0, 0]
-        for (var i=0; i<this.#lines.length; i++) {
-//            console.log(i, this.#lines[i])
-            if (this.#hasText(i)) {
-                start = i
-                end = this.#getTextBlockRangeEnd(start)
-                this.#textBlockRanges.push({start:start, end:end})
-                i = end
-//                if (!this.#isLastLine(i) && !this.#hasText(i+1) {
-//                    this.#textBlockRanges.push({start:start, end:i})
-//                }
-            } else {
-                start = i
-                end = this.#getBreakBlockRangeEnd(start)
-                console.log('break', start, end)
-                if (0 < end-start) { this.#textBlockRanges.push({start:start, end:end, type:'break'}) }
-                i = end
-            }
-        }
-        console.debug(this.#textBlockRanges)
-    }
-    #isLastLine(i) { return i===this.#lines.length-1 }
-    #hasText(i) { return this.#lines[i] }
-    #getTextBlockRangeEnd(start) {
-        for (var i=start; i<this.#lines.length; i++) {
-            if (!this.#lines[i]) { return i-1; }
-        }
-        return i
-    }
-    #getBreakBlockRangeEnd(start) {
-        for (var i=start; i<this.#lines.length; i++) {
-            if (this.#lines[i]) { return i-1; }
-        }
-        return i
-    }
     /*
-    #getTextBlockRangeEnd(start) {
-        for (var i=start; i<this.#lines.length; i++) {
-            if (i===this.#lines.length-1) { return i; }
-            else if (this.#lines[i+1]) { return i; }
-            else { i = this.#getBreakBlock(i) }
-        }
-        return i
+    parse(src) {
+        this.#parseSection(src)
     }
     */
 }
-class Parser {
-    parse(src) {
-    }
-    toHtml(dom) { const s = new XMLSerializer(); return s.serializeToString(dom); }
-    toDom(html) { const p = new DOMParser(); return p.parseFromString(html); }
-
-}
-// ContainerBlock
-class SectionParser { static parse(lines) { return `<section><h1>${heading}</h1>${lines.join('<br>')}</section>` } }
-class ParagraphParser { static parse(lines) { return `<p>${lines.join('<br>')}</p>` } }
-class BreakParser { static parse(lines) { return '<br>'.repeat(lines.length) } }
-
-// LeafBlock
-
-// inline
-class RubyParser { static parse(rb, rt) { return `<ruby>${rb}<rp>（</rp><rt>${rt}</rt><rp>）</rp></ruby>` }
-class EmParser { static parse(text) { return `<em>${text}</em>` }
-
-
-
-
-
-/*
 class Lexer {
     lex(src) {
         const textBlockRanges = []
@@ -113,7 +19,7 @@ class Lexer {
         const chars = this.#lines.map(line=>line.length)
         for (let i=0; i<this.#lines.length; i++) {
             if (start < i && this.#lines[i]) { start = i; end = i; }
-            if (start < i && this.#lines[i]) {}
+            if (start < i && this.#lines[i])
         }
 
         const textBlockRanges = []
@@ -142,6 +48,14 @@ class Lexer {
             let a = 1;  while (indexes[i]+a < this.#lines.length) { if (!this.#lines[indexes[i]+a]) { bodyRange++; } else { break; } a++; }
             this.#sections.push(createSection(heading, bodyRange))
         }
+        /*
+        for (let i of indexes) {
+            sections.push(createSection(this.#lines[i].slice(2), bodyRange ))
+        }
+        console.log(indexes)
+        console.log(this.#lines)
+        return this.#lines.join('\n')
+        */
     }
     #createSection(heading, bodyRange) {
         const section = document.createElement('section')
@@ -194,9 +108,10 @@ class Lexer {
     // ○this[メソッド名](引数)
     // ✕ this[#メソッド名](引数)
     // https://stackoverflow.com/questions/61197325/js-dynamically-access-private-fields-properties-members
-    
-    //for (let key of ['Section', 'Paragraph', 'Break', 'Em', 'Ruby', 'TematicBreak', 'Html']) {
-    //    if (this[`_is${key}](start, end)) { this[`_parse${key}`].parse() }
+    /*
+    for (let key of ['Section', 'Paragraph', 'Break', 'Em', 'Ruby', 'TematicBreak', 'Html']) {
+        if (this[`_is${key}](start, end)) { this[`_parse${key}`].parse() }
+    */
 
     #isTextBlock() { return ([this.#lines[i-1], this.#lines[i+1]].every(line=>0===line.trim().length)) }
     #appendContents(section, contents) { for (let c of contents) { section.append(c) } }
@@ -207,10 +122,12 @@ class Lexer {
     toHtml(dom) { const s = new XMLSerializer(); return s.serializeToString(dom); }
     toDom(html) { const p = new DOMParser(); return p.parseFromString(html); }
 }
-*/
-
-
 /*
+const s = new XMLSerializer();
+s.serializeToString(dom);
+const p = new DOMParser()
+p.parseFromString(html);
+*/
 class Lexer {
     constructor() {
         this.inlines = [Em, Ruby, ThematicBreak]
@@ -317,5 +234,4 @@ var _Noveld = function() {
     this._methods.set('ruby', this._parseRuby)
 }
 var noveld = new _Noveld()
-*/
 

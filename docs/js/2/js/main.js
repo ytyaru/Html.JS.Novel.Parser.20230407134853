@@ -14,8 +14,12 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     C.#methodC('C')
     c.method()
     */
+//    console.debug(new Parser().toHtml(document))
+//    console.debug(new Parser().toHtml(document.createElement('div')))
     const res = await fetch(`md/test.md`)
-    document.getElementById('content').innerHTML = noveld.parse(await res.text())
+    const md = await res.text()
+    document.getElementById('content').innerHTML = noveld.parse(md)
+    console.debug(new Noveld().parse(md))
 });
 window.addEventListener('beforeunload', (event) => {
     console.log('beforeunload!!');
