@@ -1,19 +1,19 @@
-(function () {
+(function () { // window.noveld
     class Noveld {
-        #s; #p;
-        #options = {em:true, ruby:true, breaks:true, thematicBreak:{border:true, text:'◇◆◇◆'}, section:true}
-        getDefaultOptions(options) { return [this.#options].map((element)=>{ return {...element} })[0] }
-        setOptions(options) { this.#options = {...this.#options, ...options} }
-        parse(src) { return new Lexer(this.#options).lex(new RubyParser().parse(src)) }
+        #s; #p; #l; #r;
+        #defaultOptions = {em:true, ruby:true, breaks:true, thematicBreak:{border:true, text:'◇◆◇◆'}, section:true}
+        constructor() { this.resetOptions(); this.#l = new Lexer(); this.#r = new RubyParser(); }
+        resetOptions() { this.options = this.getDefaultOptions() }
+        getDefaultOptions() { return [this.#defaultOptions].map((element)=>{ return {...element} })[0] }
+        setOptions(options) { this.options = {...this.options, ...options} }
+        parse(src) { return this.#l.lex(this.#r.parse(src)) }
         toHtml(dom) { this.#s = this.#s || new XMLSerializer(); return this.#s.serializeToString(dom); }
         toDom(html) { this.#p = this.#p || new DOMParser(); return this.#p.parseFromString(html, 'text/html'); }
     }
     class Lexer {
-        #options
         #lines = null
         #textBlocks = []
         #html = []
-        constructor(options) { this.#options = options }
         lex(src) {
             this.#lines = src.trim().split(/\r?\n/)
             console.debug(this.#lines)
@@ -21,7 +21,7 @@
             this.#clearHtml()
             for (let block of this.#textBlocks) {
                 const lines = this.#lines.slice(block.start, block.end+1)
-                this.#html.push(block.parse(lines, this.#options))
+                this.#html.push(block.parse(lines))
             }
             console.debug(this.#html)
             console.debug(this.#html.join('\n\n'))
@@ -52,7 +52,7 @@
     }
     class TextBlock {
         constructor(start, end) { this.start = start; this.end = end; }
-        parse(lines, options) { return this.#getParser(lines)(lines, options) }
+        parse(lines) { return this.#getParser(lines)(lines) }
         #getParser(lines) {
             if (!lines[0]) { return Parser.break }
             else if ('---'===lines[0] && this.start===this.end) { return Parser.thematicBreak }
@@ -60,9 +60,9 @@
         }
     }
     class Parser {
-        static break(lines, options) { return '<br>'.repeat(lines.length-1) }
-        static thematicBreak(lines, options) { return `<div class="scene-change${(options.thematicBreak.border) ? ' scene-change-border' : ''}"><p>${options.thematicBreak.text}</p></div>` }
-        static html(lines, options) { return lines.join('\n') }
+        static break(lines) { return '<br>'.repeat(lines.length-1) }
+        static thematicBreak(lines) { return `<div class="scene-change${(window.noveld.options.thematicBreak.border) ? ' scene-change-border' : ''}"><p>${window.noveld.options.thematicBreak.text}</p></div>` }
+        static html(lines) { return lines.join('\n') }
     }
     class RubyParser {
         #SHORT = /([一-龠々仝〆〇ヶ]{1,50})《([^｜《》\n\r]{1,20})》/g
