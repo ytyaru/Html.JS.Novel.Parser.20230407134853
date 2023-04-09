@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<meta name="description" content="">
+<meta name="author" content="ytyaru">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+<link rel="icon" href="asset/image/avator.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="lib/highlight/11.7.0/styles/a11y-light.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/marked/4.3.0/marked.min.js"></script>
+<script src="lib/highlight/11.7.0/highlight.min.js"></script>
+<!--<script src="js/noveld.js"></script>-->
+<!--<script src="js/noveld.test.js"></script>-->
+<!--<script src="lib/marked/4.3.0/extensions/ruby.js"></script>-->
+<!--
+<script src="lib/marked/4.3.0/extensions/ruby-block.js"></script>
+<script src="lib/marked/4.3.0/extensions/ruby-inline.js"></script>
+-->
+<!--
+<script src="lib/marked/4.3.0/extensions/ruby-long.js"></script>
+<script src="lib/marked/4.3.0/extensions/ruby-short.js"></script>
+-->
+<script src="js/parser/ruby.js"></script>
+<script src="js/parser/break.js"></script>
+<script src="js/main.js"></script>
+</head>
+<body>
+<h1>Markdown→HTML</h1>
+<div style="height:95vh;">
+    <div style="display:flex;">
+        <details><summary>使い方</summary><div id="how-to-use"></div></details>
+        <details><summary>引数</summary>
+            <form id="form">
+            <label><input type="checkbox" id="ruby" name="ruby" checked>Ruby</label>
+            <label><input type="checkbox" id="break" name="break" checked>Break</label>
+            <label><input type="checkbox" id="thematicBreak" name="thematicBreak" checked>ThematicBreak</label>
+            <label><input type="checkbox" id="thematicBreakBorder" name="thematicBreakBorder" checked>ThematicBreakBorder</label>
+            <label><input type="text" id="thematicBreakText" name="thematicBreakText" value="◇◆◇◆"></label>
+            <button type="reset" id="init">初期化</button>
+            </form>
+        </details>
+    </div>
+    <!--<div style="display:flex; height:80vh; width:80vw;">-->
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr);">
+        <textarea id="markdown"></textarea>
+        <div id="preview"></div>
+        <textarea id="html" disabled></textarea>
+    </div>
+    <footer style="margin-top:1em; text-align:center;">
+        <span>© 2023 ytyaru</span>
+        <a title="CC-BY-SA" \
+           href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja"
+           style="text-decoration: none;">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Cc.logo.circle.svg"></img>
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg"></img>
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Cc-sa.svg"></img>
+            <!--<img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/CC-BY-SA_icon.svg"></img>-->
+    </a></footer>
+</div>
+<!--
+<div style="display:grid; grid-template-rows: 1fr 80vh 1fr;">
+</div>
+-->
+</body>
+</html>
+<!-- https://coliss.com/articles/build-websites/operation/work/html-template-for-web-apps-or-sites.html -->
+<!-- https://coliss.com/articles/build-websites/operation/work/html5-template-for-2018.html -->
