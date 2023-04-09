@@ -1,15 +1,15 @@
-function getRubyExtension() {
+function getRubyBlockExtension() {
 //const SHORT = new RegExp(/([一-龠々仝〆〇ヶ]{1,50})《([^|｜《》\n\r]{1,20})》/, '') // 漢字《かんじ》
-const SHORT = new RegExp(/([^｜《》\n]+)?([一-龠々仝〆〇ヶ]{1,50})《([^|｜《》\n\r]{1,20})》([^｜《》\n]+)?/, '') // 漢字《かんじ》
+//const SHORT = new RegExp(/([^｜《》\n]+)?([一-龠々仝〆〇ヶ]{1,50})《([^|｜《》\n\r]{1,20})》/, '') // 漢字《かんじ》
 //const LONG = new RegExp(/[｜]([^一-龠々仝〆〇ヶ|｜《》\n\r]{1,50})《([^|｜《》\n\r]{1,20})》/, '') // ｜ABC《えーびーしー》
 //const LONG = new RegExp(/([^｜\n]+)?[｜]([^一-龠々仝〆〇ヶ|｜《》\n\r]{1,50})《([^|｜《》\n\r]{1,20})》([^｜\n]+)?/, '') // ｜ABC《えーびーしー》
 const LONG = new RegExp(/([^｜《》\n]+)?[｜]([^｜《》\n\r]{1,50})《([^|｜《》\n\r]{1,20})》([^｜《》\n]+)?/, '') // ｜ABC《えーびーしー》
 //const SHORT = new RegExp(/([^｜]*)([一-龠々仝〆〇ヶ]{1,50})《([^|｜《》\n\r]{1,20})》(.*)/, '') // 漢字《かんじ》
 //const LONG = new RegExp(/([^｜]*)[｜]([^一-龠々仝〆〇ヶ|｜《》\n\r]{1,50})《([^|｜《》\n\r]{1,20})》(.*)/, '') // ｜ABC《えーびーしー》
 return {
-  name: 'ruby',
-//  level: 'block',
-  level: 'inline',
+  name: 'ruby-block',
+  level: 'block',
+//  level: 'inline',
   //start(src) { return src.match(/｜/)?.index; },    // Hint to Marked.js to stop and check for a match
   //start(src) { return Math.min(src.match(SHORT)?.index, src.match(LONG)?.index); },
   start(src) { return src.match(LONG)?.index; },
@@ -20,22 +20,35 @@ return {
       let match = regex.exec(src);
       if (match) {
         console.log(src, match, regex)
+        //regex.test(src)
+        
+ /*       
+        const parentTokens = []
+        this.lexer.inline(match[0], parentTokens);
+        console.log(parentTokens )
+*/
+        //console.log(this.lexer.inlineTokens(match[0]))
         const token = {
-          type: 'ruby',   // Should match "name" above
+          type: 'ruby-block',   // Should match "name" above
           //raw: src,  // Text to consume from the source
           raw: match[0],  // Text to consume from the source
-          rb: match[2],
-          rt: match[3],
-          prefix: (match[1]) ? this.lexer.inlineTokens(match[1]) : '',
-          suffix: (match[4]) ? this.lexer.inlineTokens(match[4]) : '',
+          text: match[0],
+//          rb: match[2],
+//          rt: match[3],
+//          prefix: (match[1]) ? this.lexer.inlineTokens(match[1]) : '',
+//          suffix: (match[4]) ? this.lexer.inlineTokens(match[4]) : '',
           tokens: [],
         }
+        this.lexer.inline(token.text, token.tokens);
         return token
       }
     }
   },
   renderer(token) {
-    return `${this.parser.parseInline(token.prefix)}<ruby>${token.rb}<rp>（</rp><rt>${token.rt}</rt><rp>）</rp></ruby>${this.parser.parseInline(token.suffix)}`
+    //return `<dl>${this.parser.parseInline(token.tokens)}\n</dl>`; // parseInline to turn child tokens into HTML
+    //return `${token.prefix}<ruby>${token.rb}<rp>（</rp><rt>${token.rt}</rt><rp>）</rp>${token.suffix}`
+//    return `${this.parser.parseInline(token.prefix)}<ruby>${token.rb}<rp>（</rp><rt>${token.rt}</rt><rp>）</rp></ruby>${this.parser.parseInline(token.suffix)}`
+    return this.parser.parseInline(token.tokens)
   }
 }
 }

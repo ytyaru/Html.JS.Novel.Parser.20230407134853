@@ -42,7 +42,12 @@ window.addEventListener('DOMContentLoaded', async(event) => {
     marked.use({ hooks });
     */
 
-    marked.use({extensions:[getRubyExtension()]});
+    //marked.use({extensions:[getRubyExtension()]});
+    //marked.use({extensions:[getRubyBlockExtension(), getRubyInlineExtension()]});
+    //marked.use({extensions:[getRubyBlockExtension()]});
+    //marked.use({extensions:[getRubyInlineExtension()]});
+    marked.use({extensions:[getRubyLongExtension()]});
+    marked.use({extensions:[getRubyShortExtension()]});
 
     MARKDOWN.addEventListener('input', async(event) => {
         const html = await marked.parse(event.target.value)
