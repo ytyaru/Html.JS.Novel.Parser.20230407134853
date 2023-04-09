@@ -1,0 +1,54 @@
+@charset "utf-8";
+/*
+* {
+    padding: 0;
+    margin: 0;
+}
+*/
+body {
+    --line-of-chars: 100;
+    --color: black;
+    --background: white;
+    font-size: max(16px, calc(100vw / (var(--line-of-chars))));
+    line-height: 1.5em;
+    letter-spacing: 0.05em;
+}
+img.icon {
+    width: 1em;
+    height: 1em;
+
+}
+em {
+    font-style: normal; /* 非イタリック化 */
+    text-emphasis-style: filled dot; 
+    text-emphasis-color: var(--color);
+    -webkit-text-emphasis: filled dot var(--color);
+}
+em.dot { text-emphasis-style: dot; -webkit-text-emphasis: filled dot var(--color); }
+em.circle { text-emphasis-style: circle; -webkit-text-emphasis: filled circle var(--color); }
+em.double-circle { text-emphasis-style: double-circle; -webkit-text-emphasis: filled double-circle var(--color); }
+em.triangle { text-emphasis-style: triangle; -webkit-text-emphasis: filled triangle var(--color); }
+em.sesame { text-emphasis-style: sesame; -webkit-text-emphasis: filled sesame var(--color); }
+em.char { text-emphasis-style: '🌙'; -webkit-text-emphasis-style:  '🌙'; }
+em.open-dot { text-emphasis-style: open dot; -webkit-text-emphasis: open dot var(--color); }
+em.open-circle { text-emphasis-style: open circle; -webkit-text-emphasis: open circle var(--color); }
+em.open-double-circle { text-emphasis-style: open double-circle; -webkit-text-emphasis: open double-circle var(--color); }
+em.open-triangle { text-emphasis-style: open triangle; -webkit-text-emphasis: open triangle var(--color); }
+em.open-sesame { text-emphasis-style: open sesame; -webkit-text-emphasis: open sesame var(--color); }
+
+.scene-change { margin: 1em 0em; }
+.scene-change-border { display:flex; align-items:center; }
+.scene-change-border:before,
+.scene-change-border:after {
+    content: '';
+    flex-grow: 1;
+    height: 1px; /* 線の太さ */
+    background: #000; /* 線の色 */
+    margin:0; /* 文字と線の余白 */
+}
+.scene-change-border > p { margin:0em 1em; }
+
+textarea {
+    height: 100%;
+    resize: none;
+}
